@@ -99,13 +99,14 @@ func _process(_delta: float) -> void:
 			to_pivot = prev_hand_right_transform.origin
 			
 			delta_transform = _world_grab.get_orbit_transform(prev_hand_left_transform.origin, prev_hand_right_transform.origin, hand_left.transform.origin, hand_right.transform.origin)
-	
+
+	delta_transform = delta_transform.interpolate_with(Transform3D(), 0.5)
+
 	# Integrate motion
 	target_transform = delta_transform * target_transform
 	
 	# Smoothing
 	transform = _world_grab.split_blend(transform, target_transform, .3, .1, .1, transform * target_transform.affine_inverse() * to_pivot, to_pivot)
-	#transform = target_transform
 	
 	# Pass data required for the next frame
 	prev_hand_left_transform = hand_left.transform
